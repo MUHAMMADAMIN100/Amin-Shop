@@ -3,6 +3,7 @@ import type { RootState } from "../../app/store/store";
 import { closeCatalog, setHoveredCategoryId } from "../../entities/catalog/catalogSlice";
 import { useNavigate } from "react-router-dom";
 import { setCategoryFilter, setSubCategoryFilter } from "../../entities/product/productSlice";
+import { getCategoryImage } from "../../shared/lib/getCategoryImage";
 
 export default function CatalogModal() {
   const dispatch = useDispatch();
@@ -20,7 +21,7 @@ export default function CatalogModal() {
   return (
     <div className="z-50 fixed inset-0 bg-black/40">
       <div className="flex bg-white mx-auto mt-24 rounded-xl w-[1200px]">
-        
+
         {/* LEFT */}
         <div className="border-r w-[300px] max-h-[600px] overflow-y-auto">
           {categories.map(cat => (
@@ -29,6 +30,11 @@ export default function CatalogModal() {
               onMouseEnter={() => dispatch(setHoveredCategoryId(cat.id))}
               className="flex justify-between hover:bg-gray-100 px-6 py-4 cursor-pointer"
             >
+              <img
+                src={getCategoryImage(cat.categoryImage)}
+                alt={cat.categoryName}
+                className="w-6 h-6 object-contain"
+              />
               {cat.categoryName}
               <span>›</span>
             </div>

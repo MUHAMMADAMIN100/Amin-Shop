@@ -1,4 +1,4 @@
-import { Input, Badge, Button } from "antd";
+import { Input, Badge, Button, Image } from "antd";
 import {
   ShoppingCartOutlined,
   HeartOutlined,
@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import type { RootState } from "../../../app/store/store";
 import { openCatalog } from "../../../entities/catalog/catalogSlice";
+import img from "../../../shared/ui/images/image_1_1767204065379.jpg";
 
 export default function Header() {
   const dispatch = useDispatch();
@@ -27,13 +28,24 @@ export default function Header() {
     <header className="top-0 z-50 sticky bg-white border-b">
       <div className="mx-auto px-4 max-w-7xl">
         <div className="flex items-center gap-6 h-16">
+
           {/* Logo */}
+          <Image
+            src={img}
+            style={{
+              width: 40,
+              height: 40,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          />
           <div
             className="font-bold text-2xl whitespace-nowrap cursor-pointer"
             onClick={() => navigate("/")}
           >
-            <span className="text-blue-600">Smart</span>
-            <span className="text-black">Store</span>
+            <span style={{ color: "rgb(30, 118, 178)" }}>amin </span>
+            <span className="text-black">store</span>
           </div>
 
           {/* Catalog button */}
@@ -41,7 +53,8 @@ export default function Header() {
             type="primary"
             icon={<MenuOutlined />}
             onClick={() => dispatch(openCatalog())}
-            className="bg-yellow-400 px-4 py-2 rounded-lg font-semibold"
+            className="px-4 py-2 rounded-lg font-semibold"
+            style={{ backgroundColor: "rgb(30, 118, 178)" }}
           >
             Каталог
           </Button>
@@ -69,10 +82,22 @@ export default function Header() {
               />
             </Badge>
 
+            {/* Login icon */}
             <UserOutlined
               className="hover:text-blue-600 text-xl cursor-pointer"
-              onClick={() => navigate("/users")}
+              onClick={() => navigate("/login")}
+              title="Вход"
             />
+
+            {/* Registration icon */}
+            <Button
+              size="small"
+              type="default"
+              className="p-0 text-blue-600 hover:underline"
+              onClick={() => navigate("/registration")}
+            >
+              Регистрация
+            </Button>
           </div>
         </div>
       </div>

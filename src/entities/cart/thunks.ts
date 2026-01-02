@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { api } from "../../app/api/api";
 import type { CartResponse } from "./model/types";
+import { message } from "antd";
 
 export const addToCart = createAsyncThunk<
   void,
@@ -9,12 +10,18 @@ export const addToCart = createAsyncThunk<
 >(
   "cart/addToCart",
   async (productId, { rejectWithValue, dispatch }) => {
+    const token = sessionStorage.getItem("token"); 
+
+    if (!token) {
+      message.error("Вы не авторизованы");
+      return rejectWithValue("Вы не авторизованы");
+    }
+
     try {
-      const { data } = await api.post(
+      await api.post(
         `${import.meta.env.VITE_APP_CART_ADD_PRODUCT_ENDPOINT}?id=${productId}`
       );
       await dispatch(fetchCart());
-      return;
     } catch (error: any) {
       return rejectWithValue(
         error.response?.data?.errors?.[0] || "Ошибка добавления в корзину"
@@ -22,6 +29,7 @@ export const addToCart = createAsyncThunk<
     }
   }
 );
+
 
 export const removeFromCart = createAsyncThunk("cart/removeFromCart", async (productId: number, { rejectWithValue,dispatch }) => {
   try {

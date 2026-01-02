@@ -1,6 +1,5 @@
 import { Card, Button } from "antd";
 import { ShoppingCartOutlined, InfoCircleOutlined } from "@ant-design/icons";
-import { Image } from "antd";
 import type { Product } from "../model/types";
 import { getProductImage } from "../../../shared/lib/getProductImage";
 
@@ -12,64 +11,63 @@ interface Props {
 
 export default function ProductCard({ product, onAddToCart, onDetails }: Props) {
   const discountPercent = product.hasDiscount
-    ? Math.round((1 - product.discountPrice / product.price) * 100)
+    ? Math.round(100 - (product.discountPrice / product.price) * 100)
     : 0;
 
   return (
     <Card
-      hoverable
-      className="shadow-md rounded-xl"
-      bodyStyle={{ padding: "16px" }}
+      className="relative shadow-md hover:shadow-lg rounded-xl overflow-hidden transition-all duration-200"
       cover={
-        <div className="relative">
-          {product.hasDiscount && (
-            <div className="top-2 left-2 absolute bg-red-600 px-2 py-1 rounded font-bold text-white text-xs">
-              -{discountPercent}%
-            </div>
-          )}
-          <Image
-            src={getProductImage(product.image)}
-            alt={product.productName}
-            height={200}
-            className="object-contain"
-            preview={false}
-          />
-        </div>
+        <img
+          src={getProductImage(product.image)}
+          alt={product.productName}
+          className="w-full h-[280px] object-cover"
+        />
       }
     >
-      <div className="flex flex-col gap-1">
-        <h3 className="font-medium text-gray-800">{product.productName}</h3>
-        <div className="text-gray-500 text-sm">{product.categoryName}</div>
-        <div className="text-gray-500 text-sm">{product.color}</div>
+      {/* Скидка */}
+      {product.hasDiscount && (
+        <div className="top-2 left-2 absolute bg-red-500 px-2 py-1 rounded text-white text-xs">
+          -{discountPercent}%
+        </div>
+      )}
 
-        <div className="flex items-center gap-2 mt-2">
+      {/* Информация о продукте */}
+      <div className="mt-2 mb-4">
+        <h3 className="font-medium text-gray-900 text-lg">{product.productName}</h3>
+        <p className="text-gray-500 text-sm">{product.categoryName}</p>
+        <div className="flex items-center gap-2 mt-1">
           {product.hasDiscount ? (
             <>
-              <span className="font-bold text-lg">{product.discountPrice} $</span>
-              <span className="text-gray-400 text-sm line-through">{product.price} $</span>
+              <span className="font-semibold text-green-500">{product.discountPrice} $</span>
+              <span className="text-gray-400 line-through">{product.price} $</span>
             </>
           ) : (
-            <span className="font-bold text-lg">{product.price} $</span>
+            <span className="font-semibold text-gray-900">{product.price} $</span>
           )}
         </div>
+      </div>
 
-        <div className="flex gap-2 mt-3">
-          <Button
-            type="primary"
-            className="flex-1 bg-yellow-500 hover:bg-yellow-400 text-black"
-            icon={<ShoppingCartOutlined />}
-            onClick={() => onAddToCart(product.id)}
-          >
-            В корзину
-          </Button>
-          <Button
-            className="flex-1"
-            icon={<InfoCircleOutlined />}
-            onClick={() => onDetails(product.id)}
-          >
-            Подробнее
-          </Button>
-        </div>
+      {/* Кнопки */}
+      <div className="flex gap-2">
+        <Button
+          type="primary"
+          block
+          icon={<ShoppingCartOutlined />}
+          className="hover:bg-green-500 border-lightblue h-10 -400"
+          style={{backgroundColor: "rgb(30, 118, 178)"}}
+          onClick={() => onAddToCart(product.id)}
+        >
+          В корзину
+        </Button>
+        <Button
+          block
+          icon={<InfoCircleOutlined />}
+          className="hover:bg-gray-100 border-gray-300 h-10"
+          onClick={() => onDetails(product.id)}
+        >
+          Подробнее
+        </Button>
       </div>
     </Card>
   );

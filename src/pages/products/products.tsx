@@ -6,7 +6,6 @@ import ProductCard from "../../entities/product/ui/ProductCardUi";
 import { Row, Col, Spin } from "antd";
 import { useNavigate } from "react-router-dom";
 import { addToCart } from "../../entities/cart/thunks";
-import CategoryListUi from "../../entities/category/ui/categoryUi";
 
 export default function ProductList() {
   const dispatch = useDispatch<AppDispatch>();
